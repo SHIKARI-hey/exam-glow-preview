@@ -153,7 +153,7 @@ function TutorSignupPage() {
       headline: headline.trim() || `Cambridge ${subject} Specialist`,
       subject,
       syllabus: `Cambridge ${subject}`,
-      level,
+      level: level ?? "",
       hourlyRate: Number(hourlyRate) || 35,
       currency: "$",
       qualifications: qualifications.trim(),

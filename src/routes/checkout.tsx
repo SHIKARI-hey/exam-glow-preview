@@ -108,7 +108,7 @@ function CheckoutPage() {
     setTimeout(() => {
       // Activate subscription in profile
       const expiry = new Date(Date.now() + plan.days * 24 * 60 * 60 * 1000).toISOString();
-      saveProfile({ plan: "pro" });
+      saveProfile({ plan: planKey as Parameters<typeof saveProfile>[0]["plan"] });
       if (typeof window !== "undefined") {
         try {
           localStorage.setItem("examglow.subscription", JSON.stringify({

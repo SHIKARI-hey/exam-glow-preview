@@ -928,7 +928,7 @@ function TutorProfileCard({
 }: {
   tutor: TutorProfile;
   studentAge: number;
-  guardianName?: string;
+  guardianName?: string | undefined;
   onBook: () => void;
   onViewReviews: () => void;
   onReport: () => void;
@@ -1774,7 +1774,7 @@ function ReportProfileModal({
   onClose,
 }: {
   tutor: TutorProfile;
-  guardianName?: string;
+  guardianName?: string | undefined;
   onClose: () => void;
 }) {
   const [role, setRole] = useState<"student" | "guardian">("student");
