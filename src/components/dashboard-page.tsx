@@ -528,9 +528,9 @@ export function DashboardLayout({
   loading?: boolean;
 }) {
   return (
-    <div className="flex h-dvh overflow-hidden bg-background">
+    <div className="flex h-dvh overflow-hidden app-frame">
       <DashboardSidebar />
-      <main className="min-w-0 flex-1 overflow-y-auto">
+      <main className="app-panel min-w-0 flex-1 overflow-y-auto">
         <TopBar crumbs={crumbs} />
         <div className="mx-auto max-w-[1280px] px-4 pb-16 pt-4 sm:px-6 lg:px-8">
           {loading ? <PageSkeleton /> : children}

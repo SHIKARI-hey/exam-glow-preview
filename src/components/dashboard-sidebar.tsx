@@ -4,6 +4,9 @@ import {
   BookOpen,
   CalendarDays,
   ChevronDown,
+  ChevronsUpDown,
+  MoreVertical,
+  Check,
   FileText,
   ClipboardCheck,
   Home,
@@ -18,6 +21,7 @@ import {
 } from "lucide-react";
 
 import logoMark from "@/assets/logo-mark.png";
+import { readProfile } from "@/lib/onboarding";
 
 const primaryItems = [
   { label: "Home", to: "/home", Icon: Home },
@@ -52,6 +56,13 @@ export function DashboardSidebar() {
     const saved = localStorage.getItem("sidebar.practiceOpen");
     return saved === null ? true : saved === "true";
   });
+  const [user, setUser] = useState<{ name: string; email: string }>({ name: "Student", email: "" });
+  useEffect(() => {
+    try {
+      const p = readProfile();
+      setUser({ name: p.name || "Student", email: p.email || "" });
+    } catch {}
+  }, []);
   const pathname = useRouterState({ select: (state) => state.location.pathname });
 
   // Persist practiceOpen to localStorage whenever it changes
@@ -79,9 +90,9 @@ export function DashboardSidebar() {
         to={to}
         title={!showLabels ? label : undefined}
         onClick={() => setMobileOpen(false)}
-        className={`group flex h-10 items-center gap-3 rounded-xl px-3 text-[15px] transition-colors ${
-          inset && showLabels ? "pl-8" : ""
-        } ${active ? "bg-sidebar-active text-sidebar-foreground" : "text-sidebar-muted hover:bg-sidebar-hover hover:text-sidebar-foreground"}`}
+        className={`group flex h-[33px] items-center gap-3 rounded-lg px-2.5 text-[14px] transition-colors ${
+          inset && showLabels ? "pl-2.5" : ""
+        } ${active ? "bg-sidebar-active font-medium text-sidebar-foreground shadow-[0_1px_2px_oklch(0_0_0/0.08)]" : "text-sidebar-foreground/85 hover:bg-sidebar-hover hover:text-sidebar-foreground"}`}
       >
         <Icon className="size-[17px] shrink-0" strokeWidth={1.65} aria-hidden />
         {showLabels && <span className="truncate">{label}</span>}
@@ -89,73 +100,71 @@ export function DashboardSidebar() {
     );
   };
 
+  const sectionLabel = (label: string, show: boolean) =>
+    show ? (
+      <p className="px-2 pb-1.5 pt-2 text-[11px] font-medium uppercase tracking-[0.06em] text-sidebar-muted">{label}</p>
+    ) : (
+      <div className="mx-auto my-2 h-px w-6 bg-sidebar-border" />
+    );
+
   const renderSidebar = (mobile = false) => {
     const showLabels = mobile || !collapsed;
     return (
     <aside
       className={`flex h-dvh shrink-0 flex-col overflow-hidden bg-sidebar text-sidebar-foreground ${
-        mobile ? "w-full" : `border-r border-sidebar-border transition-[width] duration-300 ${collapsed ? "w-[64px]" : "w-[218px]"}`
+        mobile ? "w-full" : `transition-[width] duration-300 ${collapsed ? "w-[68px]" : "w-[244px]"}`
       }`}
     >
-      <div className="grid h-16 grid-cols-[minmax(0,1fr)_auto] items-center gap-2 px-3">
-        <Link to="/home" className="flex min-w-0 items-center gap-2.5 px-1">
-          <img src={logoMark} alt="ExamGlow logo" width={36} height={36} className="size-9 shrink-0 rounded-full bg-sidebar-accent p-0.5" />
-          {showLabels && <span className="truncate text-xl font-semibold">ExamGlow</span>}
-        </Link>
-        {mobile ? (
-          <button
-            type="button"
-            onClick={() => setMobileOpen(false)}
-            className="flex size-10 items-center justify-center rounded-full bg-sidebar-hover text-sidebar-foreground transition-colors hover:bg-sidebar-active"
-            aria-label="Close navigation"
-          >
-            <X className="size-5" />
-          </button>
-        ) : (
-          <button
-            type="button"
-            onClick={() => setCollapsed((value) => !value)}
-            className="hidden size-9 items-center justify-center rounded-lg text-sidebar-muted transition-colors hover:bg-sidebar-hover hover:text-sidebar-foreground md:flex"
-            aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
-          >
-            {collapsed ? <PanelLeftOpen className="size-5" /> : <PanelLeftClose className="size-5" />}
-          </button>
+      <div className="px-4 pt-4">
+        <div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-2">
+          <Link to="/home" className="flex min-w-0 items-center gap-2.5">
+            <span className="flex size-[34px] shrink-0 items-center justify-center rounded-lg bg-sidebar-accent p-1">
+              <img src={logoMark} alt="ExamGlow logo" width={26} height={26} className="size-[26px] rounded-md" />
+            </span>
+            {showLabels && (
+              <span className="min-w-0 leading-tight">
+                <span className="block text-[11px] text-sidebar-muted">Workspace</span>
+                <span className="block truncate text-[15px] font-semibold">ExamGlow ™</span>
+              </span>
+            )}
+          </Link>
+          {mobile ? (
+            <button type="button" onClick={() => setMobileOpen(false)} className="flex size-8 items-center justify-center rounded-lg text-sidebar-muted hover:bg-sidebar-hover" aria-label="Close navigation">
+              <X className="size-5" />
+            </button>
+          ) : (
+            <button type="button" onClick={() => setCollapsed((v) => !v)} className="hidden size-7 items-center justify-center rounded-md text-sidebar-muted transition-colors hover:bg-sidebar-hover hover:text-sidebar-foreground md:flex" aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"} title={collapsed ? "Expand sidebar" : "Collapse sidebar"}>
+              {collapsed ? <PanelLeftOpen className="size-4" /> : <ChevronsUpDown className="size-4" />}
+            </button>
+          )}
+        </div>
+        {showLabels && (
+          <div className="mt-4 flex h-[31px] items-center gap-2 rounded-lg bg-sidebar-hover px-2.5 text-sidebar-muted">
+            <Search className="size-4" aria-hidden />
+            <span className="flex-1 text-[14px]">Search</span>
+            <kbd className="text-[12px] font-sans">⌘F</kbd>
+          </div>
         )}
       </div>
 
-      <div className="scrollbar-none min-h-0 flex-1 overflow-y-auto overscroll-contain px-3 pb-6">
-        {showLabels && (
-          <div className="mb-2 flex items-center gap-2 px-2 py-2 text-sidebar-muted">
-            <Search className="size-[18px]" aria-hidden />
-            <span className="text-sm">Search</span>
-          </div>
-        )}
-
+      <div className="scrollbar-none min-h-0 flex-1 overflow-y-auto overscroll-contain px-4 pb-4 pt-3">
         <nav className="space-y-0.5" aria-label="Main navigation">
+          {sectionLabel("Main menu", showLabels)}
           {primaryItems.map((item) => navItem(item, false, mobile))}
         </nav>
-
-        <div className="my-3 h-px bg-sidebar-border" />
-
-        <nav className="space-y-0.5" aria-label="Study navigation">
+        <nav className="mt-3 space-y-0.5" aria-label="Study navigation">
+          {sectionLabel("Study", showLabels)}
           {studyItems.map((item) => navItem(item, false, mobile))}
         </nav>
-
-        <div className="mt-2">
-          <button
-            type="button"
-            onClick={() => setPracticeOpen((v) => !v)}
-            className="flex h-10 w-full items-center gap-3 rounded-xl px-3 text-left text-[15px] text-sidebar-muted transition-colors hover:bg-sidebar-hover hover:text-sidebar-foreground"
-          >
-            <ClipboardCheck className="size-[17px] shrink-0" strokeWidth={1.65} aria-hidden />
-            {showLabels && (
+        <div className="mt-3">
+          <button type="button" onClick={() => setPracticeOpen((v) => !v)} className="flex w-full items-center justify-between px-2 pb-1.5 pt-2 text-left">
+            {showLabels ? (
               <>
-                <span className="flex-1 font-medium">Practice &amp; Activities</span>
-                <ChevronDown
-                  className={`size-4 transition-transform duration-200 ${practiceOpen ? "" : "-rotate-90"}`}
-                  aria-hidden
-                />
+                <span className="text-[11px] font-medium uppercase tracking-[0.06em] text-sidebar-muted">Practice</span>
+                <ChevronDown className={`size-3.5 text-sidebar-muted transition-transform duration-200 ${practiceOpen ? "" : "-rotate-90"}`} aria-hidden />
               </>
+            ) : (
+              <span className="mx-auto h-px w-6 bg-sidebar-border" />
             )}
           </button>
           {(!showLabels || practiceOpen) && (
@@ -164,13 +173,37 @@ export function DashboardSidebar() {
             </nav>
           )}
         </div>
-
-        <div className="my-3 h-px bg-sidebar-border" />
-        <nav className="space-y-0.5" aria-label="Course navigation">
+        <nav className="mt-3 space-y-0.5" aria-label="Course navigation">
+          {sectionLabel("Course", showLabels)}
           {courseItems.map((item) => navItem(item, false, mobile))}
         </nav>
       </div>
 
+      <div className="mx-4 border-t border-sidebar-border py-3">
+        <div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-2 px-1">
+          <div className="flex min-w-0 items-center gap-2.5">
+            <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-sidebar-accent text-[13px] font-semibold text-sidebar-accent-foreground">
+              {user.name.charAt(0).toUpperCase()}
+            </span>
+            {showLabels && (
+              <span className="min-w-0 leading-tight">
+                <span className="block truncate text-[13px] font-semibold uppercase">{user.name}</span>
+                {user.email && <span className="block truncate text-[11px] text-sidebar-muted">{user.email}</span>}
+              </span>
+            )}
+          </div>
+          {showLabels && (
+            <Link to="/settings" className="flex size-6 items-center justify-center rounded text-sidebar-muted hover:bg-sidebar-hover" aria-label="Account settings">
+              <MoreVertical className="size-4" />
+            </Link>
+          )}
+        </div>
+        {showLabels && (
+          <p className="mt-3 flex items-center gap-1 px-0.5 text-[12px] font-semibold text-sidebar-success">
+            <Check className="size-3.5" strokeWidth={3} aria-hidden /> Setup complete
+          </p>
+        )}
+      </div>
     </aside>
   );
   };

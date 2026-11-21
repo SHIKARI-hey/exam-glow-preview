@@ -23,9 +23,9 @@ export const Route = createFileRoute("/chat")({
 
 function ChatPage() {
   return (
-    <div className="flex h-dvh w-full max-w-full overflow-hidden bg-background">
+    <div className="flex h-dvh w-full max-w-full overflow-hidden app-frame">
       <DashboardSidebar />
-      <main className="min-w-0 flex-1 h-dvh max-w-full overflow-hidden flex flex-col p-0 m-0">
+      <main className="app-panel min-w-0 flex-1 max-w-full overflow-hidden flex flex-col">
         <StudyChat className="h-full w-full rounded-none border-0 shadow-none" />
       </main>
     </div>

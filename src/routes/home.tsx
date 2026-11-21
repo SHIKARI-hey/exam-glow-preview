@@ -129,9 +129,9 @@ export function HomePage() {
     : "IGCSE Curriculum Review";
 
   return (
-    <div className="flex h-dvh overflow-hidden bg-background">
+    <div className="flex h-dvh overflow-hidden app-frame">
       <DashboardSidebar />
-      <main className="min-w-0 flex-1 overflow-y-auto">
+      <main className="app-panel min-w-0 flex-1 overflow-y-auto">
         <div className="mx-auto max-w-[1180px] px-5 pb-24 pt-20 md:px-8 md:pt-10 lg:px-12">
           {/* Dateline */}
           <header className="flex items-center gap-5">
