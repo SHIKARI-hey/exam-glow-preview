@@ -123,7 +123,6 @@ export function DashboardSidebar() {
             </span>
             {showLabels && (
               <span className="min-w-0 leading-tight">
-                <span className="block text-[11px] text-sidebar-muted">Workspace</span>
                 <span className="block truncate text-[15px] font-semibold">ExamGlow ™</span>
               </span>
             )}
@@ -198,11 +197,6 @@ export function DashboardSidebar() {
             </Link>
           )}
         </div>
-        {showLabels && (
-          <p className="mt-3 flex items-center gap-1 px-0.5 text-[12px] font-semibold text-sidebar-success">
-            <Check className="size-3.5" strokeWidth={3} aria-hidden /> Setup complete
-          </p>
-        )}
       </div>
     </aside>
   );

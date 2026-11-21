@@ -105,7 +105,7 @@
   --sidebar-accent: oklch(0.2 0.01 260);
   --sidebar-accent-foreground: oklch(0.99 0 0);
   --sidebar-success: oklch(0.55 0.15 150);
-  --panel: oklch(1 0 0);
+  --panel: var(--background);
   --overlay: oklch(0 0 0 / 55%);
 }
 

@@ -142,49 +142,41 @@ export function HomePage() {
             <ProfileAvatar className="shrink-0" />
           </header>
 
-          {/* Masthead */}
-          <h1 className="mt-7 max-w-4xl text-[clamp(2.6rem,6.5vw,4.5rem)] leading-[1.02]">
-            Good to see you, <span className="display-italic">{firstName}</span>
-          </h1>
-
-          {/* Hero band */}
-          <section className="mt-9 overflow-hidden rounded-[30px] bg-ink px-7 py-10 text-ink-foreground sm:px-11 sm:py-12">
-            <p className="flex items-center gap-2.5 text-[11px] font-semibold uppercase tracking-[0.22em] text-ink-foreground/60">
-              <span className="size-1.5 rounded-full bg-lavender" aria-hidden />
-              Today&apos;s focus
+          {/* Masthead — landing style */}
+          <section className="mt-12 text-center">
+            <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-muted-foreground">
+              Today&apos;s focus · {focusTitle}
             </p>
-            <h2 className="mt-5 max-w-2xl text-[clamp(2.1rem,4.6vw,3.4rem)] leading-[1.04]">
-              {focusTitle}
-            </h2>
-            <p className="mt-5 max-w-md text-[15px] leading-relaxed text-ink-foreground/65">
+            <h1 className="mx-auto mt-6 max-w-4xl text-[clamp(2.8rem,7vw,5rem)] leading-[1.02]">
+              Good to see you,
+              <br />
+              <span className="display-italic">{firstName}</span>
+            </h1>
+            <p className="mx-auto mt-6 max-w-md text-[15px] leading-relaxed text-muted-foreground">
               All chapters, notes, diagrams, and unlimited AI tutoring — free, no subscription needed.
             </p>
-            <div className="mt-8 flex flex-wrap items-center gap-3">
+            <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
               <Link
                 to="/syllabus-notes"
-                className="inline-flex items-center gap-2 rounded-full bg-ink-foreground px-6 py-3 text-sm font-medium text-ink transition-transform hover:-translate-y-0.5"
+                className="inline-flex items-center gap-2 rounded-full bg-ink px-7 py-3.5 text-[15px] font-medium text-ink-foreground transition-transform hover:-translate-y-0.5"
               >
                 Continue syllabus notes <ArrowRight className="size-4" aria-hidden />
               </Link>
               <Link
                 to="/notes"
-                className="inline-flex items-center gap-2 rounded-full border border-ink-foreground/25 px-6 py-3 text-sm font-medium hover:bg-ink-foreground/10"
+                className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-7 py-3.5 text-[15px] font-medium text-foreground hover:bg-muted"
               >
                 Open my notes
               </Link>
             </div>
+          </section>
 
-            {/* Typographic stat line */}
-            <div className="mt-11 grid grid-cols-2 gap-y-8 border-t border-ink-foreground/15 pt-8 sm:grid-cols-4">
-              <BandStat value="All Open" label="Syllabus Access" />
-              <BandStat value={notesCount.toString()} label="Personal Notes" divider />
-              <BandStat
-                value={profile.streakDays ? `${profile.streakDays} days` : "Active"}
-                label="Study Consistency"
-                divider
-              />
-              <BandStat value="Unlimited" label="AI Tutor" divider />
-            </div>
+          {/* Stat cards — landing style */}
+          <section className="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            <StatCard tone="bg-mint" value="All Open" label="Syllabus access" />
+            <StatCard tone="bg-lilac" value={notesCount.toString()} label="Personal notes" />
+            <StatCard tone="bg-highlight" value={profile.streakDays ? `${profile.streakDays} days` : "Active"} label="Study consistency" />
+            <StatCard tone="bg-card border border-border" value="Unlimited" label="AI tutor" />
           </section>
 
           {/* The index */}
@@ -201,7 +193,7 @@ export function HomePage() {
                 <Link
                   key={title}
                   to={to}
-                  className="group grid grid-cols-[2.5rem_minmax(0,1fr)_auto] items-center gap-3 border-t border-border/70 py-6 sm:gap-6"
+                  className="group grid grid-cols-[2.5rem_minmax(0,1fr)_auto] md:grid-cols-[2.5rem_minmax(0,1fr)_auto_auto] items-center gap-3 border-t border-border/70 py-6 sm:gap-6"
                 >
                   <span className="text-xs font-semibold tabular-nums tracking-[0.18em] text-muted-foreground">
                     {String(i + 1).padStart(2, "0")}
@@ -336,11 +328,11 @@ export function HomePage() {
   );
 }
 
-function BandStat({ value, label, divider }: { value: string; label: string; divider?: boolean }) {
+function StatCard({ value, label, tone }: { value: string; label: string; tone: string }) {
   return (
-    <div className={divider ? "sm:border-l sm:border-ink-foreground/15 sm:pl-6" : ""}>
-      <strong className="block font-display text-[clamp(1.5rem,2.4vw,1.9rem)] font-normal leading-none">{value}</strong>
-      <span className="mt-2 block text-[11px] uppercase tracking-[0.16em] text-ink-foreground/55">{label}</span>
+    <div className={`flex min-h-[170px] flex-col justify-between rounded-[24px] p-6 text-foreground ${tone}`}>
+      <strong className="block font-display text-[clamp(2rem,3.4vw,2.8rem)] font-normal leading-none">{value}</strong>
+      <span className="text-sm">{label}</span>
     </div>
   );
 }
